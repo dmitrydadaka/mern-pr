@@ -28,7 +28,7 @@ const getAllNotes = asyncHandler(async (req, res) => {
 // @desc Create new note
 // @route POST /notes
 // @access Private
-const createNewNote = asyncHandler(async (req, res) => {
+const createNote = asyncHandler(async (req, res) => {
     const { user, title, text } = req.body
 
     // Confirm data
@@ -117,7 +117,7 @@ const deleteNote = asyncHandler(async (req, res) => {
 
 module.exports = {
     getAllNotes,
-    createNewNote,
+    createNote,
     updateNote,
     deleteNote
 }
