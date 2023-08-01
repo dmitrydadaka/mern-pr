@@ -4,15 +4,15 @@ const Note = require('../models/Note')
 const asyncHandler = require('express-async-handler')
 const bcrypt = require('bcrypt')
 
-const getAllUsers = asyncHandler(async (req, res) => {
-    const users = await User.find().select('-password').lean()
-    if (!users?.length) {
-        return res.status(400).json({ message: "No users found" })
+const getAllNotes = asyncHandler(async (req, res) => {
+    const notes = await Note.find().select('-password').lean()
+    if (!notes.length) {
+        return res.status(400).json({ message: "No notes found" })
     }
-    res.json(users)
+    res.json(notes)
 })
 
-const createUser = asyncHandler(async (req, res) => {
+const createNote = asyncHandler(async (req, res) => {
     const { username, password, roles } = req.body
 
     if (!username || !password || !Array.isArray(roles) || !roles.length) {
@@ -33,7 +33,7 @@ const createUser = asyncHandler(async (req, res) => {
     }
 })
 
-const updateUser = asyncHandler(async (req, res) => {
+const updateNote = asyncHandler(async (req, res) => {
     const { id, username, roles, active, password } = req.body
 
     if (!id || !username || !Array.isArray(roles) || !roles.length || typeof active !== 'boolean') {
@@ -60,7 +60,7 @@ const updateUser = asyncHandler(async (req, res) => {
      res.json({ message: `${updatedUser.username} updated`})
 })
 
-const deleteUser = asyncHandler(async (req, res) => {
+const deleteNote = asyncHandler(async (req, res) => {
     const { id } = req.body
     if( !id ){
         res.status(400).json({message: "User Id required"})
@@ -84,4 +84,4 @@ const deleteUser = asyncHandler(async (req, res) => {
 
 })
 
-module.exports = { getAllUsers, createUser, updateUser, deleteUser }
+module.exports = { getAllNotes, createNote, updateNote, deleteNote }
