@@ -26,12 +26,12 @@ const NewUserForm = () => {
     const [roles, setRoles] = useState(["Employee"])
 
     useEffect(() => {
-        setValidUsername(USER_REGEX.test(username)), [username]
-    }
+       setValidUsername(USER_REGEX.test(username))}, 
+       [username]
     )
     useEffect(() => {
-        setValidPassword(PWD_REGEX.test(username)), [password]
-    }
+        setValidPassword(PWD_REGEX.test(username))}, 
+        [password]
     )
     useEffect(() => {
         if (isSuccess) {
@@ -70,7 +70,7 @@ const NewUserForm = () => {
 
     const content = (
         <>
-            <p className='errClass'>{err?.data?.message}</p>
+            <p className={errClass}>{error?.data?.message}</p>
             <form className="form" onSubmit={onSaveUserClicked}>
                 <div className='form__title-row'>
                     <h2>New User</h2>
@@ -115,6 +115,7 @@ const NewUserForm = () => {
                     multiple={true}
                     size="3"
                     value={roles}
+             
                     onChange={onRolesChanged}
                 >
                     {options}

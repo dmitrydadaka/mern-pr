@@ -29,40 +29,40 @@ export const usersApiSlice = apiSlice.injectEndpoints({
                 } else return [{ type: 'User', id: 'LIST' }]
             }
         }),
-    }),
-    addNewUser: builder.mutation({
-        query: initialUserData => ({
-            url: '/users',
-            method: 'POST',
-            body: {
-                ...initialUserData,
-            }
+        addNewUser: builder.mutation({
+            query: initialUserData => ({
+                url: '/users',
+                method: 'POST',
+                body: {
+                    ...initialUserData,
+                }
+            }),
+            invalidatesTags: [
+                { type: 'User', id: "LIST" }
+            ]
         }),
-        invalidatesTags: [
-            { type: 'User', id: "LIST" }
-        ]
-    }),
-    updateUser: builder.mutation({
-        query: initialUserData => ({
-            url: '/users',
-            method: 'PATCH',
-            body: {
-                ...initialUserData,
-            }
+        updateUser: builder.mutation({
+            query: initialUserData => ({
+                url: '/users',
+                method: 'PATCH',
+                body: {
+                    ...initialUserData,
+                }
+            }),
+            invalidatesTags: (result, error, arg) => [
+                { type: 'User', id: arg.id }
+            ]
         }),
-        invalidatesTags: (result, error, arg) => [
-            { type: 'User', id: arg.id }
-        ]
-    }),
-    deleteUser: builder.mutation({
-        query: ({ id }) => ({
-            url: `/users`,
-            method: 'DELETE',
-            body: { id }
+        deleteUser: builder.mutation({
+            query: ({ id }) => ({
+                url: `/users`,
+                method: 'DELETE',
+                body: { id }
+            }),
+            invalidatesTags: (result, error, arg) => [
+                { type: 'User', id: arg.id }
+            ]
         }),
-        invalidatesTags: (result, error, arg) => [
-            { type: 'User', id: arg.id }
-        ]
     }),
 })
 

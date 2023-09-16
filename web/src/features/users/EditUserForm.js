@@ -72,6 +72,16 @@ const EditUserForm = ({ user }) => {
         await deleteUser({id: user.id})
     }
 
+    const options = Object.values(ROLES).map(role => {
+        return (
+            <option
+                key={role}
+                value={role}
+
+            > {role}</option >
+        )
+    })
+
     let canSave
     if (password) {
         canSave = [roles.length, validUsername, validPassword].every(Boolean) && !isLoading
