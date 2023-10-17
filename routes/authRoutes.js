@@ -9,6 +9,6 @@ router.route('/refresh')
     .get()
 
 router.route('/logout')
-    .get()
+    .post()
 
 module.exports = router
