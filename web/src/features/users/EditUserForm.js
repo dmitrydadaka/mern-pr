@@ -1,14 +1,15 @@
-import { useState, useEffect } from 'react'
-import { useUpdateUserMutation, useDeleteUserMutation } from './usersApiSlice'
-import { useNavigate } from 'react-router-dom'
+import { useUpdateUserMutation, useDeleteUserMutation } from "./usersApiSlice"
+import { useState, useEffect } from "react"
+import { useNavigate } from "react-router-dom"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faSave, faTrashCan } from '@fortawesome/free-solid-svg-icons'
-import { ROLES } from '../../config/roles'
+import { faSave, faTrashCan } from "@fortawesome/free-solid-svg-icons"
+import { ROLES } from "../../config/roles"
 
 const USER_REGEX = /^[A-z]{3,20}$/
 const PWD_REGEX = /^[A-z0-9!@#$%]{4,12}$/
 
 const EditUserForm = ({ user }) => {
+
     const [updateUser, {
         isLoading,
         isSuccess,
@@ -38,6 +39,7 @@ const EditUserForm = ({ user }) => {
     useEffect(() => {
         setValidPassword(PWD_REGEX.test(password))
     }, [password])
+
     useEffect(() => {
         console.log(isSuccess)
         if (isSuccess || isDelSuccess) {
@@ -59,6 +61,7 @@ const EditUserForm = ({ user }) => {
         )
         setRoles(values)
     }
+
     const onActiveChanged = () => setActive(prev => !prev)
 
     const onSaveUserClicked = async (e) => {
@@ -68,8 +71,9 @@ const EditUserForm = ({ user }) => {
             await updateUser({ id: user.id, username, roles, active })
         }
     }
+
     const onDeleteUserClicked = async () => {
-        await deleteUser({id: user.id})
+        await deleteUser({ id: user.id })
     }
 
     const options = Object.values(ROLES).map(role => {
@@ -89,12 +93,14 @@ const EditUserForm = ({ user }) => {
         canSave = [roles.length, validUsername].every(Boolean) && !isLoading
     }
 
-    const errClass = (isError || isDelError) ? 'errmsg' : 'offscreen'
+    const errClass = (isError || isDelError) ? "errmsg" : "offscreen"
     const validUserClass = !validUsername ? 'form__input--incomplete' : ''
     const validPwdClass = password && !validPassword ? 'form__input--incomplete' : ''
     const validRolesClass = !Boolean(roles.length) ? 'form__input--incomplete' : ''
 
     const errContent = (error?.data?.message || delerror?.data?.message) ?? ''
+
+
     const content = (
         <>
             <p className={errClass}>{errContent}</p>
@@ -121,7 +127,7 @@ const EditUserForm = ({ user }) => {
                     </div>
                 </div>
                 <label className="form__label" htmlFor="username">
-                    Username: <span className="nowrap">[4-20 letters]</span></label>
+                    Username: <span className="nowrap">[3-20 letters]</span></label>
                 <input
                     className={`form__input ${validUserClass}`}
                     id="username"
@@ -168,13 +174,11 @@ const EditUserForm = ({ user }) => {
                 >
                     {options}
                 </select>
+
             </form>
         </>
     )
 
     return content
-
-     
 }
-
 export default EditUserForm

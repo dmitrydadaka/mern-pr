@@ -41,7 +41,7 @@ const Note = ({ noteId }) => {
                 </td>
             </tr>
         )
+
     } else return null
 }
-
 export default Note

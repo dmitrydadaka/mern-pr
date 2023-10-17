@@ -1,14 +1,12 @@
-import { useState, useEffect } from 'react'
-import { useUpdateNoteMutation, useDeleteNoteMutation } from './notesApiSlice'
-import { useNavigate } from 'react-router-dom'
+import { useState, useEffect } from "react"
+import { useUpdateNoteMutation, useDeleteNoteMutation } from "./notesApiSlice"
+import { useNavigate } from "react-router-dom"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faSave, faTrashCan } from '@fortawesome/free-solid-svg-icons'
-
-
+import { faSave, faTrashCan } from "@fortawesome/free-solid-svg-icons"
 
 const EditNoteForm = ({ note, users }) => {
 
-    const [addNewNote, {
+    const [updateNote, {
         isLoading,
         isSuccess,
         isError,
@@ -29,31 +27,31 @@ const EditNoteForm = ({ note, users }) => {
     const [userId, setUserId] = useState(note.user)
 
     useEffect(() => {
-        if (isSuccess || idDelSuccess) {
+
+        if (isSuccess || isDelSuccess) {
             setTitle('')
             setText('')
             setUserId('')
             navigate('/dash/notes')
         }
+
     }, [isSuccess, isDelSuccess, navigate])
 
     const onTitleChanged = e => setTitle(e.target.value)
     const onTextChanged = e => setText(e.target.value)
+    const onCompletedChanged = e => setCompleted(prev => !prev)
     const onUserIdChanged = e => setUserId(e.target.value)
-    const onCompletedChanged = () => setCompleted(prev => !prev)
 
-    const canSave = [userId, title, text].every(Boolean) && !isLoading
-
-
-    const onDeleteNoteClicked = async () => {
-        await deleteNote({ id: note.id })
-    }
+    const canSave = [title, text, userId].every(Boolean) && !isLoading
 
     const onSaveNoteClicked = async (e) => {
-        e.preventDefault()
         if (canSave) {
             await updateNote({ id: note.id, user: userId, title, text, completed })
         }
+    }
+
+    const onDeleteNoteClicked = async () => {
+        await deleteNote({ id: note.id })
     }
 
     const created = new Date(note.createdAt).toLocaleString('en-US', { day: 'numeric', month: 'long', year: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' })
@@ -62,16 +60,16 @@ const EditNoteForm = ({ note, users }) => {
     const options = users.map(user => {
         return (
             <option
-                key={role}
-                value={role}
+                key={user.id}
+                value={user.id}
 
             > {user.username}</option >
         )
     })
 
-    const errClass = isError ? "errmsg" : "offscreen"
-    const validTitleClass = !tile ? 'form__input--incomplete' : ''
-    const validTextClass = !text ? 'form__input--incomplete' : ''
+    const errClass = (isError || isDelError) ? "errmsg" : "offscreen"
+    const validTitleClass = !title ? "form__input--incomplete" : ''
+    const validTextClass = !text ? "form__input--incomplete" : ''
 
     const errContent = (error?.data?.message || delerror?.data?.message) ?? ''
 
@@ -100,16 +98,15 @@ const EditNoteForm = ({ note, users }) => {
                         </button>
                     </div>
                 </div>
-
-                <label className="form__label" htmlFor="title">
+                <label className="form__label" htmlFor="note-title">
                     Title:</label>
                 <input
                     className={`form__input ${validTitleClass}`}
                     id="note-title"
                     name="title"
                     type="text"
-                    value={title}
                     autoComplete="off"
+                    value={title}
                     onChange={onTitleChanged}
                 />
 
@@ -122,8 +119,7 @@ const EditNoteForm = ({ note, users }) => {
                     value={text}
                     onChange={onTextChanged}
                 />
-
-<div className="form__row">
+                <div className="form__row">
                     <div className="form__divider">
                         <label className="form__label form__checkbox-container" htmlFor="note-completed">
                             WORK COMPLETE:
