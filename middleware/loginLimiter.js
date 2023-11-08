@@ -13,7 +13,7 @@ const  loginLimiter = rateLimit({
         res.status(options.statusCode).send(options.message)
     },
     standardHeaders: true,
-    legaceHeaders: false
+    legacyHeaders: false
 })
 
 module.exports = loginLimiter
